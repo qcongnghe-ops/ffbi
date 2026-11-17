@@ -19,5 +19,8 @@
    - Khi hoàn tất 100%, hiển thị thông báo **Báo thành công** và tự động/nhấn nút quay về **Màn hình Lựa chọn**.
 
 ## Hướng dẫn Build APK
-- **Cách 1 (GitHub Actions tự động)**: Đẩy toàn bộ mã nguồn lên repository GitHub, workflow `.github/workflows/build-apk.yml` sẽ tự động build và xuất file `LCN-FB-Filter-Debug-APK.apk`.
-- **Cách 2 (Android Studio)**: Mở thư mục dự án bằng Android Studio Iguana trở lên, điền `facebook_app_id` trong `app/src/main/res/values/strings.xml` hoặc nhập trực tiếp Access Token trên màn hình đăng nhập.
+- **GitHub Actions**: Pull request build APK debug để kiểm tra. Push lên `main` hoặc chạy thủ công workflow **Build and Sign APK** sẽ build APK release đã ký; tải APK tại phần **Artifacts** của lần chạy.
+- **Cấu hình ký release**: Tạo một keystore riêng và lưu bốn giá trị sau trong **Settings → Secrets and variables → Actions** của repository: `ANDROID_KEYSTORE_BASE64` (keystore được mã hoá Base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` và `ANDROID_KEY_PASSWORD`. Không đưa keystore hoặc mật khẩu vào mã nguồn. Workflow hiển thị SHA-1 của chứng chỉ release trong phần tóm tắt lần chạy; dùng fingerprint đó trong cấu hình Facebook App nếu cần.
+- **Tạo keystore**: Với JDK 17, chạy `keytool -genkeypair -v -keystore release-key.jks -alias ffbi-release -keyalg RSA -keysize 2048 -validity 10000`. Mã hoá tệp để lưu vào secret `ANDROID_KEYSTORE_BASE64` bằng `base64 -w 0 release-key.jks` trên Linux. Sao lưu keystore an toàn; cần dùng cùng keystore để ký các bản cập nhật.
+- **Build cục bộ**: Với JDK 17 và Gradle 8.2, chạy `gradle assembleRelease`. Để ký cục bộ, đặt cùng bốn biến môi trường mà workflow dùng; nếu thiếu, APK release cục bộ sẽ không được ký.
+- **Android Studio**: Mở thư mục dự án bằng Android Studio Iguana trở lên, điền `facebook_app_id` trong `app/src/main/res/values/strings.xml` hoặc nhập trực tiếp Access Token trên màn hình đăng nhập.
