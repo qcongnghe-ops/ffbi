@@ -19,5 +19,6 @@
    - Khi hoàn tất 100%, hiển thị thông báo **Báo thành công** và tự động/nhấn nút quay về **Màn hình Lựa chọn**.
 
 ## Hướng dẫn Build APK
-- **Cách 1 (GitHub Actions tự động)**: Đẩy toàn bộ mã nguồn lên repository GitHub, workflow `.github/workflows/build-apk.yml` sẽ tự động build và xuất file `LCN-FB-Filter-Debug-APK.apk`.
-- **Cách 2 (Android Studio)**: Mở thư mục dự án bằng Android Studio Iguana trở lên, điền `facebook_app_id` trong `app/src/main/res/values/strings.xml` hoặc nhập trực tiếp Access Token trên màn hình đăng nhập.
+- **GitHub Actions**: Workflow `.github/workflows/build-apk.yml` tự động build APK release khi push hoặc tạo pull request vào nhánh `main`. Có thể chạy thủ công từ tab **Actions** bằng **Run workflow**. Tải artifact `LCN-FB-Filter-Release-APK` ở trang chạy workflow; APK được build nhưng chưa ký bằng khóa phát hành.
+- **Build cục bộ**: Với JDK 17 và Gradle 8.2 đã cài, chạy `gradle assembleRelease`. APK đầu ra nằm tại `app/build/outputs/apk/release/`.
+- **Android Studio**: Mở thư mục dự án bằng Android Studio Iguana trở lên, điền `facebook_app_id` trong `app/src/main/res/values/strings.xml` hoặc nhập trực tiếp Access Token trên màn hình đăng nhập.
